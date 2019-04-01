@@ -1,0 +1,109 @@
+---
+title: "Analysis"
+author: "Phillip Hungerford"
+date: "27/03/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+# Background
+
+## DVH Metrics
+
+- Bladder ~ V65Gy(%) stands for the relative volume of the bladder (as a percentage of the  whole bladder volume) receiving 65Gy or more dose
+- Bladder ~ D2cc(%) stands for minimum dose to the hottest 2cc i.e. cm^3 of bladder subvolume expressed as a percentage of the prescription dose (Drx)
+-  any such metrics can be read off the cumulative DVH curve of a particular organ (see also this post for more info on this: http://www.carlosjanderson.com/understanding-the-meaning-of-dvh-metrics/)
+ 
+# Data exploration and analysis
+Load the data
+```{r}
+mydata <- read.csv("../../2_pipeline/labels_n.csv")
+```
+
+Exploration
+```{r}
+head(mydata)
+str(mydata)
+```
+
+As we can see we have categorical and numeric variables so we will turn the NA values to '0'. 
+```{r}
+mydata[is.na(mydata)] <- 0
+#sanity check
+head(mydata)
+summary(mydata)
+```
+
+## Correlation matrix
+```{r}
+# Create a correlation matrix 
+mydata.cor <- cor(mydata[sapply(mydata, is.numeric)], method=c('spearman'))
+
+# install package if needed 
+#install.packages("corrplot")
+
+#load package 
+library("corrplot")
+
+# visualise correlations
+corrplot(mydata.cor)
+```
+
+```{r}
+round(mydata.cor, 2)
+```
+
+
+# Violations
+So we want to predict bladder and rectum violations as per the initial study. 
+
+## Any violation
+
+Check the number of violations in the dataset. 
+```{r}
+sum(mydata$Bla_Rec_ANY)
+```
+
+We can see that out of the 417 patients, 159 in total have a plan violation. We can run a multi-variate linear regression model to find significant predictors of a violation.
+
+```{r}
+# Run MVLR model on all predictors
+any_model <- lm(Bla_Rec_ANY ~ Bladder_D2cc_percent + Bladder_V40Gy_percent + Bladder_V65Gy_percent + Rectum_D2cc_percent + Rectum_V40Gy_percent + Rectum_V65Gy_percent, data=mydata)
+summary(any_model)
+```
+* Note: Need to clean this up. We can see that bladder_ANY and Rectum_ANY have a significant effect on violation, but thats obvious, these will be removed from the model.  
+
+
+## Bladder
+
+In the Caine et al paper a bladder violation was defined if any of the following threshold was breached (i.e. any of the following conditions became true):
+
+* Bladder ~ D2cc(%) >= 105%
+* Bladder ~ V40Gy(%) >= 50%
+* Bladder ~ V65Gy(%) >= 25%
+
+ For the bladder, dosimetric outcome measures included the 1-cm3 maximum dose, V40 Gy, and V65 Gy, which were correlated with bladder volume, OB (cm3), OB (%), volume of prostate (cm3), Hydrogel (yes or no), and lymph node treatment (yes or no).
+```{r}
+bladder_violation <- lm(Bladder_ANY ~ Bladder_D2cc_percent + Bladder_V40Gy_percent + Bladder_V65Gy_percent, data=mydata)
+summary(bladder_violation)
+```
+
+## Rectum
+
+In the Caine et al paper a rectum violation was defined if any of the following threshold was breached (i.e. any of the following conditions became true):
+
+* Rectum ~ D2cc(%) >= 102.5%
+* Rectum ~ V40Gy(%) >= 35%
+* Rectum ~ V65Gy(%) >=17%
+
+For the rectum, dosimetric outcome measures included the 1-cm3 maximum dose, V40 Gy, and V65 Gy, which were correlated with rectal volume, OR (cm3), OR (%), volume of prostate (cm3), Hydrogel (yes or no), and lymph node treatment (yes or no).
+```{r}
+rectum_violation <- lm(Rectum_ANY ~ Rectum_D2cc_percent + Rectum_V40Gy_percent + Rectum_V65Gy_percent, data=mydata)
+summary(rectum_violation)
+```
+
+## Classification and Regression Tree (CART) analysis
+https://www.statmethods.net/advstats/cart.html
+
