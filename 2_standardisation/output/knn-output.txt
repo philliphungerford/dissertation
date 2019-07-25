@@ -1,0 +1,21 @@
+X shape is:  (1716, 4096)
+y shape is:  (1716,)
+Splitting the data...
+Test set score: 0.93
+
+Classfication Report for test:
+               precision    recall  f1-score   support
+
+    Prostate       0.77      0.98      0.86        65
+     Bladder       0.93      0.95      0.94        58
+    Left Fem       0.98      0.98      0.98        48
+   Right Fem       0.98      1.00      0.99        54
+      Rectum       1.00      0.68      0.81        63
+        Body       1.00      1.00      1.00        56
+
+   micro avg       0.93      0.93      0.93       344
+   macro avg       0.94      0.93      0.93       344
+weighted avg       0.94      0.93      0.93       344
+
+
+####################################################################
