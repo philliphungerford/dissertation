@@ -5,10 +5,10 @@ Created on Sun Jun  9 16:27:02 2019
 
 @author: philliphungerford
 
-Purpose: Machine learning models for radiology data standardisation
+Purpose: Deep learning models for radiology data standardisation
 """
 # =============================================================================
-# 0. Import dependencies
+# Dependencies
 # =============================================================================
 import numpy as np
 import pandas as pd
