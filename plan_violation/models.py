@@ -12,14 +12,11 @@ Purpose: Deep learning models for predicting plan violations in radiotherapy dat
 # =============================================================================
 
 # Pointnet dependencies -------------------------------------------------------
-import os
-import time
 import random
 import numpy as np
 import tensorflow as tf
 from numpy.random import seed
 import matplotlib.pyplot as plt
-from keras.optimizers import SGD
 from keras.models import Sequential
 from tensorflow import set_random_seed
 from sklearn.model_selection import train_test_split
@@ -27,51 +24,25 @@ from sklearn.metrics import roc_auc_score, roc_curve, classification_report
 from keras.layers import Dense, MaxPooling1D, Convolution1D, Dropout, Flatten, BatchNormalization
 from keras.callbacks import ModelCheckpoint, TensorBoard, EarlyStopping
 # for reading the ply files 
-
 #from open3d import *
-import numpy as np
-
-# To time 
-import time
-
-# For reading the labels
-import pandas as pd
 
 # Pointnet basic dependencies --------------------------------------------------
 # Import dependencies
-import os
-import time
-import random
-import numpy as np
-import tensorflow as tf
-from numpy.random import seed
-import matplotlib.pyplot as plt
+
 from keras.optimizers import Adam
-from keras.models import Sequential
-from tensorflow import set_random_seed
 from mlxtend.plotting import plot_confusion_matrix
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import roc_auc_score, roc_curve, classification_report, auc, confusion_matrix
-from keras.layers import Dense, MaxPooling1D, Convolution1D, Dropout, Flatten, BatchNormalization
-from keras.callbacks import ModelCheckpoint, TensorBoard, EarlyStopping
 
 # Pointnet basic with l dependencies -------------------------------------------
 
 # 3D CNN dependencies ----------------------------------------------------------
 # Install depedencies
-from keras.models import Sequential
-from keras.layers import Conv3D, MaxPool3D, Flatten, Dense
-from keras.layers import Dropout, Input, BatchNormalization
-from sklearn.metrics import confusion_matrix, accuracy_score, roc_curve, classification_report
+from keras.layers import Conv3D, MaxPool3D
+from keras.layers import Input
+from sklearn.metrics import confusion_matrix, accuracy_score
 #from mlxtend.plotting import plot_confusion_matrix
 from keras.losses import categorical_crossentropy
-from keras.optimizers import Adadelta, SGD, Adam
-import matplotlib.pyplot as plt
-from matplotlib.pyplot import cm
 from keras.models import Model
-import numpy as np
-import keras
-import h5py
+
 
 # fix random seed for reproducibility
 seeds=42
@@ -695,7 +666,6 @@ def cnn_3d():
 	print("\n#####################################################################")
 
 	# Plot AUC
-	from sklearn.metrics import roc_curve, auc
 	fpr, tpr, thresholds = roc_curve(y_test, y_pred)
 	auc = auc(fpr, tpr)
 
@@ -721,4 +691,4 @@ def cnn_3d():
 	plt.legend(loc='best')
 	plt.show()
 	print("\n#####################################################################")
-return(model, cm, report)
+    return(model, cm, report)
