@@ -48,7 +48,9 @@ def CNN(X_train, X_test, y_train, y_test, k, my_tags):
     max_epochs = 25
     batch_size = 128
     dropout_rate = 0.5
-
+    size = 16
+    h,w,d = size, size, size
+    c=1
     # Optimizers
     # from keras.optimizers import SGD
     # opt = Adadelta(lr=0.001)
@@ -56,7 +58,6 @@ def CNN(X_train, X_test, y_train, y_test, k, my_tags):
     # opt = SGD(lr=0.001, momentum=0.9)
 
     # Model Architecture -------------------------------------------------------
-
     model = Sequential()
     # Convolution layers
     model.add(Conv3D(filters=8, kernel_size=(3, 3, 3), activation='relu', \
