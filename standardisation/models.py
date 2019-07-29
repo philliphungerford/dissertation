@@ -273,46 +273,46 @@ def standardisation_model(X_train_cnn, X_train_rnn, X_test_cnn, X_test_rnn, y_tr
                       metrics=['accuracy'])
     vqa_model.summary()
 
-
-history = vqa_model.fit([X_train_cnn, X_train_rnn], y_train,
-                        epochs=epochs,
-                        batch_size=batch_size,
-                        validation_split=0.1,
-                        callbacks=[EarlyStopping(monitor='val_loss',
-                                                 patience=3,
-                                                 min_delta=0.0001)])
-vqa_model.save('final_model.h5')
-plot_model(vqa_model, to_file='model.png')
-
-print("###################################################################")
-print("\nResults:\n")
-accr = vqa_model.evaluate([X_test_cnn, X_test_rnn], y_test)
-print('Test set\n  Loss: {:0.3f}\n  Accuracy: {:0.3f}'.format(accr[0],
-                                                              accr[1]))
-# Plot training & validation loss values
-plt.plot(history.history['loss'])
-plt.plot(history.history['val_loss'])
-plt.title('Model loss')
-plt.ylabel('Loss')
-plt.xlabel('Epoch')
-plt.legend(['Train', 'Test'], loc='upper left')
-plt.show()
-
-# Plot training & validation accuracy values
-plt.plot(history.history['acc'])
-plt.plot(history.history['val_acc'])
-plt.title('Model accuracy')
-plt.ylabel('Accuracy')
-plt.xlabel('Epoch')
-plt.legend(['Train', 'Test'], loc='upper left')
-plt.show()
-
-# Make predictions
-y_pred = vqa_model.predict([X_test_cnn, X_test_rnn])
-report = classification_report(y_test, y_pred.round(), target_names=my_tags)
-print("\nClassfication Report for test:\n", report)
-print("###################################################################")
-return (vqa_model)
+    
+    history = vqa_model.fit([X_train_cnn, X_train_rnn], y_train,
+                            epochs=epochs,
+                            batch_size=batch_size,
+                            validation_split=0.1,
+                            callbacks=[EarlyStopping(monitor='val_loss',
+                                                     patience=3,
+                                                     min_delta=0.0001)])
+    vqa_model.save('final_model.h5')
+    plot_model(vqa_model, to_file='model.png')
+    
+    print("###################################################################")
+    print("\nResults:\n")
+    accr = vqa_model.evaluate([X_test_cnn, X_test_rnn], y_test)
+    print('Test set\n  Loss: {:0.3f}\n  Accuracy: {:0.3f}'.format(accr[0],
+                                                                  accr[1]))
+    # Plot training & validation loss values
+    plt.plot(history.history['loss'])
+    plt.plot(history.history['val_loss'])
+    plt.title('Model loss')
+    plt.ylabel('Loss')
+    plt.xlabel('Epoch')
+    plt.legend(['Train', 'Test'], loc='upper left')
+    plt.show()
+    
+    # Plot training & validation accuracy values
+    plt.plot(history.history['acc'])
+    plt.plot(history.history['val_acc'])
+    plt.title('Model accuracy')
+    plt.ylabel('Accuracy')
+    plt.xlabel('Epoch')
+    plt.legend(['Train', 'Test'], loc='upper left')
+    plt.show()
+    
+    # Make predictions
+    y_pred = vqa_model.predict([X_test_cnn, X_test_rnn])
+    report = classification_report(y_test, y_pred.round(), target_names=my_tags)
+    print("\nClassfication Report for test:\n", report)
+    print("###################################################################")
+    return (vqa_model)
 
 
 # ==============================================================================

@@ -120,10 +120,8 @@ def plot(self, d=2, cmap="Oranges", axis=False):
 
 # Create function for CNN features --------------------------------------------
 
-def get_features(voxel_size):
-    '''
+def get_features(voxel_size, save, binary=False):
 
-    '''
     # 1. Get point data from structures ---------------------------------------
     # 1.1. Get a list of the structure files in raw directory
     files = os.listdir('../data/raw/')
@@ -164,20 +162,12 @@ def get_features(voxel_size):
     # Create a pandas dataframe to examine and store the datafiles
     dataset_2_info = pd.DataFrame({'index': idx, 'name': files})
 
-    syntheticNames = []
-
-    for name in filenamelist:
-        organ = name[16:]
-        syntheticOrgan = synthetic_organ_creator(organ)
-        name[15:] = syntheticOrgan
-        syntheticNames.append(name)
-
     if save == 'yes':
         np.save('../processed/dataset2voxels16.npy', X_cnn)
         dataset_2_info.to_csv('../../interim/dataset2labels.csv', index=True)
 
 
-return data_points, idx, voxels
+    return data_points, idx, X_cnn
 
 # =============================================================================
 # 2. Prepare data
