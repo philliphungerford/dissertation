@@ -1,0 +1,492 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf600
+{\fonttbl\f0\fmodern\fcharset0 Courier;}
+{\colortbl;\red255\green255\blue255;\red25\green25\blue25;}
+{\*\expandedcolortbl;;\cssrgb\c12941\c12941\c12941;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww19260\viewh12040\viewkind0
+\deftab720
+\pard\pardeftab720\partightenfactor0
+
+\f0\fs28 \cf2 \expnd0\expndtw0\kerning0
+Training shape:  (214, 1024, 3)\
+Test shape: 	 (72, 1024, 3)\
+_________________________________________________________________\
+Layer (type)                 Output Shape              Param #   \
+=================================================================\
+input_2 (InputLayer)         (None, 1024, 3)           0         \
+_________________________________________________________________\
+lambda_3 (Lambda)            (None, 1024, 3)           0         \
+_________________________________________________________________\
+conv1d_15 (Conv1D)           (None, 1024, 64)          256       \
+_________________________________________________________________\
+batch_normalization_23 (Batc (None, 1024, 64)          256       \
+_________________________________________________________________\
+conv1d_16 (Conv1D)           (None, 1024, 64)          4160      \
+_________________________________________________________________\
+batch_normalization_24 (Batc (None, 1024, 64)          256       \
+_________________________________________________________________\
+lambda_4 (Lambda)            (None, 1024, 64)          0         \
+_________________________________________________________________\
+conv1d_20 (Conv1D)           (None, 1024, 64)          4160      \
+_________________________________________________________________\
+batch_normalization_30 (Batc (None, 1024, 64)          256       \
+_________________________________________________________________\
+conv1d_21 (Conv1D)           (None, 1024, 128)         8320      \
+_________________________________________________________________\
+batch_normalization_31 (Batc (None, 1024, 128)         512       \
+_________________________________________________________________\
+conv1d_22 (Conv1D)           (None, 1024, 1024)        132096    \
+_________________________________________________________________\
+batch_normalization_32 (Batc (None, 1024, 1024)        4096      \
+_________________________________________________________________\
+max_pooling1d_6 (MaxPooling1 (None, 1, 1024)           0         \
+_________________________________________________________________\
+dense_16 (Dense)             (None, 1, 512)            524800    \
+_________________________________________________________________\
+batch_normalization_33 (Batc (None, 1, 512)            2048      \
+_________________________________________________________________\
+dropout_3 (Dropout)          (None, 1, 512)            0         \
+_________________________________________________________________\
+dense_17 (Dense)             (None, 1, 256)            131328    \
+_________________________________________________________________\
+batch_normalization_34 (Batc (None, 1, 256)            1024      \
+_________________________________________________________________\
+dropout_4 (Dropout)          (None, 1, 256)            0         \
+_________________________________________________________________\
+dense_18 (Dense)             (None, 1, 2)              514       \
+_________________________________________________________________\
+flatten_2 (Flatten)          (None, 2)                 0         \
+=================================================================\
+Total params: 814,082\
+Trainable params: 809,858\
+Non-trainable params: 4,224\
+_________________________________________________________________\
+None\
+Current epoch is:1\
+Current epoch is:2\
+Current epoch is:3\
+Current epoch is:4\
+Current epoch is:5\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  2.241493542989095\
+Test accuracy:  0.7152777777777778\
+Current epoch is:6\
+Current epoch is:7\
+Current epoch is:8\
+Current epoch is:9\
+Current epoch is:10\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  2.4810400009155273\
+Test accuracy:  0.7152777777777778\
+Current epoch is:11\
+Current epoch is:12\
+Current epoch is:13\
+Current epoch is:14\
+Current epoch is:15\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  2.6229416264428034\
+Test accuracy:  0.7152777777777778\
+Current epoch is:16\
+Current epoch is:17\
+Current epoch is:18\
+Current epoch is:19\
+Current epoch is:20\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  1.837030569712321\
+Test accuracy:  0.7222222222222222\
+Current epoch is:21\
+Current epoch is:22\
+Current epoch is:23\
+Current epoch is:24\
+Current epoch is:25\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  2.6375312010447183\
+Test accuracy:  0.6944444444444444\
+Current epoch is:26\
+Current epoch is:27\
+Current epoch is:28\
+Current epoch is:29\
+Current epoch is:30\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  2.261869642469618\
+Test accuracy:  0.7083333333333334\
+Current epoch is:31\
+Current epoch is:32\
+Current epoch is:33\
+Current epoch is:34\
+Current epoch is:35\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  2.6000250710381403\
+Test accuracy:  0.7152777777777778\
+Current epoch is:36\
+Current epoch is:37\
+Current epoch is:38\
+Current epoch is:39\
+Current epoch is:40\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  2.758053673638238\
+Test accuracy:  0.7291666666666666\
+Current epoch is:41\
+Current epoch is:42\
+Current epoch is:43\
+Current epoch is:44\
+Current epoch is:45\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  2.165735642115275\
+Test accuracy:  0.6944444444444444\
+Current epoch is:46\
+Current epoch is:47\
+Current epoch is:48\
+Current epoch is:49\
+Current epoch is:50\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  2.36434186829461\
+Test accuracy:  0.6944444444444444\
+Current epoch is:51\
+Current epoch is:52\
+Current epoch is:53\
+Current epoch is:54\
+Current epoch is:55\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  1.7767690552605524\
+Test accuracy:  0.7083333333333334\
+Current epoch is:56\
+Current epoch is:57\
+Current epoch is:58\
+Current epoch is:59\
+Current epoch is:60\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  1.2993064986334906\
+Test accuracy:  0.7361111111111112\
+Current epoch is:61\
+Current epoch is:62\
+Current epoch is:63\
+Current epoch is:64\
+Current epoch is:65\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  1.4099681377410889\
+Test accuracy:  0.7222222222222222\
+Current epoch is:66\
+Current epoch is:67\
+Current epoch is:68\
+Current epoch is:69\
+Current epoch is:70\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  1.9431792100270588\
+Test accuracy:  0.7152777777777778\
+Current epoch is:71\
+Current epoch is:72\
+Current epoch is:73\
+Current epoch is:74\
+Current epoch is:75\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  1.7487682236565485\
+Test accuracy:  0.7152777777777778\
+Current epoch is:76\
+Current epoch is:77\
+Current epoch is:78\
+Current epoch is:79\
+Current epoch is:80\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  1.397709025277032\
+Test accuracy:  0.6805555555555556\
+Current epoch is:81\
+Current epoch is:82\
+Current epoch is:83\
+Current epoch is:84\
+Current epoch is:85\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  1.666325569152832\
+Test accuracy:  0.7083333333333334\
+Current epoch is:86\
+Current epoch is:87\
+Current epoch is:88\
+Current epoch is:89\
+Current epoch is:90\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  1.854446013768514\
+Test accuracy:  0.7222222222222222\
+Current epoch is:91\
+Current epoch is:92\
+Current epoch is:93\
+Current epoch is:94\
+Current epoch is:95\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  1.5747497346666124\
+Test accuracy:  0.7222222222222222\
+Current epoch is:96\
+Current epoch is:97\
+Current epoch is:98\
+Current epoch is:99\
+Current epoch is:100\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  1.61782439549764\
+Test accuracy:  0.7361111111111112\
+Current epoch is:101\
+Current epoch is:102\
+Current epoch is:103\
+Current epoch is:104\
+Current epoch is:105\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  1.1546346876356337\
+Test accuracy:  0.7222222222222222\
+Current epoch is:106\
+Current epoch is:107\
+Current epoch is:108\
+Current epoch is:109\
+Current epoch is:110\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  1.0042850706312392\
+Test accuracy:  0.5972222222222222\
+Current epoch is:111\
+Current epoch is:112\
+Current epoch is:113\
+Current epoch is:114\
+Current epoch is:115\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  1.1135048866271973\
+Test accuracy:  0.7430555555555556\
+Current epoch is:116\
+Current epoch is:117\
+Current epoch is:118\
+Current epoch is:119\
+Current epoch is:120\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  0.8986433744430542\
+Test accuracy:  0.7013888888888888\
+Current epoch is:121\
+Current epoch is:122\
+Current epoch is:123\
+Current epoch is:124\
+Current epoch is:125\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  0.8865431149800619\
+Test accuracy:  0.7152777777777778\
+Current epoch is:126\
+Current epoch is:127\
+Current epoch is:128\
+Current epoch is:129\
+Current epoch is:130\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  1.2956236733330622\
+Test accuracy:  0.75\
+Current epoch is:131\
+Current epoch is:132\
+Current epoch is:133\
+Current epoch is:134\
+Current epoch is:135\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  1.237528959910075\
+Test accuracy:  0.7013888888888888\
+Current epoch is:136\
+Current epoch is:137\
+Current epoch is:138\
+Current epoch is:139\
+Current epoch is:140\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  0.9371209409501817\
+Test accuracy:  0.7013888888888888\
+Current epoch is:141\
+Current epoch is:142\
+Current epoch is:143\
+Current epoch is:144\
+Current epoch is:145\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  1.4410172038608127\
+Test accuracy:  0.6805555555555556\
+Current epoch is:146\
+Current epoch is:147\
+Current epoch is:148\
+Current epoch is:149\
+Current epoch is:150\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  2.090599536895752\
+Test accuracy:  0.7291666666666666\
+Current epoch is:151\
+Current epoch is:152\
+Current epoch is:153\
+Current epoch is:154\
+Current epoch is:155\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  2.143413358264499\
+Test accuracy:  0.7361111111111112\
+Current epoch is:156\
+Current epoch is:157\
+Current epoch is:158\
+Current epoch is:159\
+Current epoch is:160\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  2.1246677769554987\
+Test accuracy:  0.7222222222222222\
+Current epoch is:161\
+Current epoch is:162\
+Current epoch is:163\
+Current epoch is:164\
+Current epoch is:165\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  1.465566052330865\
+Test accuracy:  0.7361111111111112\
+Current epoch is:166\
+Current epoch is:167\
+Current epoch is:168\
+Current epoch is:169\
+Current epoch is:170\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  1.6815125677320693\
+Test accuracy:  0.6944444444444444\
+Current epoch is:171\
+Current epoch is:172\
+Current epoch is:173\
+Current epoch is:174\
+Current epoch is:175\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  1.4963585535685222\
+Test accuracy:  0.7083333333333334\
+Current epoch is:176\
+Current epoch is:177\
+Current epoch is:178\
+Current epoch is:179\
+Current epoch is:180\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  0.96895342402988\
+Test accuracy:  0.7013888888888888\
+Current epoch is:181\
+Current epoch is:182\
+Current epoch is:183\
+Current epoch is:184\
+Current epoch is:185\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  0.969600690735711\
+Test accuracy:  0.6805555555555556\
+Current epoch is:186\
+Current epoch is:187\
+Current epoch is:188\
+Current epoch is:189\
+Current epoch is:190\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  1.5657884279886882\
+Test accuracy:  0.7291666666666666\
+Current epoch is:191\
+Current epoch is:192\
+Current epoch is:193\
+Current epoch is:194\
+Current epoch is:195\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  1.5663006835513644\
+Test accuracy:  0.7361111111111112\
+Current epoch is:196\
+Current epoch is:197\
+Current epoch is:198\
+Current epoch is:199\
+Current epoch is:200\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  1.578691906399197\
+Test accuracy:  0.7152777777777778\
+Current epoch is:201\
+Current epoch is:202\
+Current epoch is:203\
+Current epoch is:204\
+Current epoch is:205\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  1.5489794148339167\
+Test accuracy:  0.7361111111111112\
+Current epoch is:206\
+Current epoch is:207\
+Current epoch is:208\
+Current epoch is:209\
+Current epoch is:210\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  0.996452702416314\
+Test accuracy:  0.7083333333333334\
+Current epoch is:211\
+Current epoch is:212\
+Current epoch is:213\
+Current epoch is:214\
+Current epoch is:215\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  1.1635231441921658\
+Test accuracy:  0.6944444444444444\
+Current epoch is:216\
+Current epoch is:217\
+Current epoch is:218\
+Current epoch is:219\
+Current epoch is:220\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  1.4420884980095758\
+Test accuracy:  0.6944444444444444\
+Current epoch is:221\
+Current epoch is:222\
+Current epoch is:223\
+Current epoch is:224\
+Current epoch is:225\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  1.2904659112294514\
+Test accuracy:  0.6944444444444444\
+Current epoch is:226\
+Current epoch is:227\
+Current epoch is:228\
+Current epoch is:229\
+Current epoch is:230\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  1.1198638015323215\
+Test accuracy:  0.6944444444444444\
+Current epoch is:231\
+Current epoch is:232\
+Current epoch is:233\
+Current epoch is:234\
+Current epoch is:235\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  1.2184189160664876\
+Test accuracy:  0.7013888888888888\
+Current epoch is:236\
+Current epoch is:237\
+Current epoch is:238\
+Current epoch is:239\
+Current epoch is:240\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  1.629078163041009\
+Test accuracy:  0.3888888888888889\
+Current epoch is:241\
+Current epoch is:242\
+Current epoch is:243\
+Current epoch is:244\
+Current epoch is:245\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  1.3180393510394626\
+Test accuracy:  0.4652777777777778\
+Current epoch is:246\
+Current epoch is:247\
+Current epoch is:248\
+Current epoch is:249\
+Current epoch is:250\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  1.08502377404107\
+Test accuracy:  0.5208333333333334\
+72/72 [==============================] - 0s 5ms/step\
+Test loss:  1.08502377404107\
+Test accuracy:  0.5208333333333334\
+###################################################################\
+\
+Results:\
+\
+\
+###################### Model Performance ############################\
+\
+Train: 0.633, Test: 0.521\
+\
+#####################################################################\
+\
+Classfication Report for test:\
+               precision    recall  f1-score   support\
+\
+No violation       0.76      0.44      0.56        50\
+   Violation       0.35      0.64      0.45        22\
+\
+   micro avg       0.52      0.50      0.51        72\
+   macro avg       0.55      0.54      0.50        72\
+weighted avg       0.63      0.50      0.52        72\
+ samples avg       0.50      0.50      0.50        72\
+\
+\
+#####################################################################\
+/usr/local/lib/python3.6/dist-packages/sklearn/metrics/classification.py:1437: UndefinedMetricWarning: Precision and F-score are ill-defined and being set to 0.0 in samples with no predicted labels.\
+  'precision', 'predicted', average, warn_for)}
