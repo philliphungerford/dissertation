@@ -142,7 +142,7 @@ def CNN(X_train, X_test, y_train, y_test, k, my_tags):
 def rnn(X_train, X_test, Y_train, Y_test, k, my_tags):
     print("---------------------------- RNN ---------------------------------")
     print("Building Document Classifier... \n")
-    # 0. Hyperparameters -------------------------------------------------------
+    # Hyperparameters -------------------------------------------------------
     # The maximum number of words to be used
     MAX_NB_WORDS = 26
 
@@ -153,29 +153,9 @@ def rnn(X_train, X_test, Y_train, Y_test, k, my_tags):
     EMBEDDING_DIM = 20
 
     epochs = 25
-    batch_size = 32
+    batch_size = 128
 
-    '''
-    # 1. Tokenize the data -----------------------------------------------------
-    tokenizer = Tokenizer(num_words=MAX_NB_WORDS, filters='!"#$%&()*+,-./:;<=>?@[\]^_`{|}~', lower=True, char_level=True)
-    tokenizer.fit_on_texts(name_df['synthetic'].values)
-    word_index = tokenizer.word_index
-    print('Found %s unique tokens.' % len(word_index))
-
-    X = tokenizer.texts_to_sequences(name_df['synthetic'].values)
-    X = pad_sequences(X, maxlen=MAX_SEQUENCE_LENGTH)
-    print('Shape of data tensor:', X.shape)
-
-    Y = pd.get_dummies(name_df['tags']).values
-    print('Shape of label tensor:', Y.shape)
-
-    # 2. Split the data --------------------------------------------------------
-    X_train, X_test, Y_train, Y_test = train_test_split(X,Y, test_size = 0.10, random_state = 42)
-    print(X_train.shape,Y_train.shape)
-    print(X_test.shape,Y_test.shape)
-
-    '''
-    # 3. Build the model -------------------------------------------------------
+    # Build the model -------------------------------------------------------
     model = Sequential()
     model.add(Embedding(MAX_NB_WORDS, EMBEDDING_DIM, input_length=X_train.shape[1]))
     model.add(SpatialDropout1D(0.2))
@@ -190,7 +170,7 @@ def rnn(X_train, X_test, Y_train, Y_test, k, my_tags):
                         callbacks=[EarlyStopping(monitor='val_loss',
                                                  patience=3, min_delta=0.0001)])
 
-    # 4. Results ---------------------------------------------------------------
+    # Results ---------------------------------------------------------------
     print("###################################################################")
     print("\nResults:\n")
     accr = model.evaluate(X_test, Y_test)
@@ -456,9 +436,9 @@ def pointnet_full(y, my_tags, test_ids):
     # define optimizer
     opt = Adam(lr=0.001, decay=0.7)
 
-    max_epochs=25
-    batch_size=32
-    dropout_rate = 0.7
+    max_epochs=250
+    batch_size=128
+    dropout_rate = 0.5
 
     # -------------------------------------------------------------------------
     ### POINTNET ARCHITECTURE
