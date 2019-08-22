@@ -21,38 +21,20 @@ from keras.models import Sequential
 from tensorflow import set_random_seed
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import roc_auc_score, roc_curve, classification_report
-from keras.layers import Dense, MaxPooling1D, Convolution1D, Dropout, Flatten, BatchNormalization
+from keras.layers import Dense, MaxPooling1D, Convolution1D, Dropout, Flatten, BatchNormalization, Reshape, Lambda
+
 from keras.callbacks import ModelCheckpoint, TensorBoard, EarlyStopping
-# for reading the ply files 
-#from open3d import *
-
-# Pointnet basic dependencies --------------------------------------------------
-# Import dependencies
-
-from keras.optimizers import Adam
-from mlxtend.plotting import plot_confusion_matrix
-
-# Pointnet basic with l dependencies -------------------------------------------
-
 # 3D CNN dependencies ----------------------------------------------------------
 # Install depedencies
 from keras.layers import Conv3D, MaxPool3D
 from keras.layers import Input
-from sklearn.metrics import confusion_matrix, accuracy_score
-#from mlxtend.plotting import plot_confusion_matrix
-from keras.losses import categorical_crossentropy
 from keras.models import Model
 
 
-# fix random seed for reproducibility
-seeds=0
-random.seed(seeds)
-seed(seeds)
-set_random_seed(seeds)
-
 # =============================================================================
 # PointNet Full Model
-# =============================================================================	
+# =============================================================================
+# Functions for model ---------------------------------------------------------
 def mat_mul(A, B):
     return tf.matmul(A, B)
 
@@ -91,12 +73,14 @@ def jitter_point_cloud(batch_data, sigma=0.01, clip=0.05):
     jittered_data += batch_data
     return jittered_data
 
-def pointnet_full(y, my_tags, test_ids, num_classes=18):
+
+def pointnet_full(y, my_tags, test_ids, num_classes=2):
+
     # -------------------------------------------------------------------------
     # Load data
-    desired_points = 1024
-    X = np.load('data/processed/X_pointnet.npy', allow_pickle=True)
-    
+    X = np.load('../data/processed/X_pointnet.npy', allow_pickle=True)
+
+    # Split data
     X_train = X[test_ids[:-int(np.ceil(X.shape[0]*0.25))]]
     X_test = X[test_ids[-int(np.ceil(X.shape[0]*0.25)):]]
     y_train = y[test_ids[:-int(np.ceil(y.shape[0]*0.25))]]
@@ -110,32 +94,18 @@ def pointnet_full(y, my_tags, test_ids, num_classes=18):
     test_points_r = X_test
     test_labels_r = y_test
 
-    # label to categorical
-    from keras.utils import to_categorical
-    #y_test = to_categorical(y_test)
-    #y_train = to_categorical(y_train)
-    # Let's examine the data. 
-
+    # Let's examine the data.
     print("Training shape: ", train_points_r.shape)
     print("Test shape: \t", test_points_r.shape)
 
-    # ------------------------------------------------------------------------------
-    # hyperparameter
-    # number of points in each sample
-    num_points = desired_points
-
-    # number of categories
-    k = 2
-
-    # define optimizer
-    # opt = Adam(lr=0.001, decay=0.7)
+    # hyper-parameters ---------------------------------------------------------
+    num_points = 1024
 
     max_epochs=250
     batch_size=128
     dropout_rate = 0.5
 
-    # ------------------------------------------------------------------------------
-    ### POINTNET ARCHITECTURE
+    # POINTNET ARCHITECTURE ---------------------------------------------------
 
     input_points = Input(shape=(num_points, 3))
     x = Convolution1D(64, 1, activation='relu', input_shape=(num_points, 3))(input_points)
@@ -175,7 +145,6 @@ def pointnet_full(y, my_tags, test_ids, num_classes=18):
     f = Dense(64 * 64, weights=[np.zeros([256, 64 * 64]), np.eye(64).flatten().astype(np.float32)])(f)
     feature_T = Reshape((64, 64))(f)
 
-
     # forward net
     g = Lambda(mat_mul, arguments={'B': feature_T})(g)
     g = Convolution1D(64, 1, activation='relu')(g)
@@ -185,10 +154,8 @@ def pointnet_full(y, my_tags, test_ids, num_classes=18):
     g = Convolution1D(1024, 1, activation='relu')(g)
     g = BatchNormalization()(g)
 
-
     # global_feature
     global_feature = MaxPooling1D(pool_size=num_points)(g)
-
 
     # point_net_cls
     c = Dense(512, activation='relu')(global_feature)
@@ -200,11 +167,9 @@ def pointnet_full(y, my_tags, test_ids, num_classes=18):
     c = Dense(num_classes, activation='sigmoid')(c)
     prediction = Flatten()(c)
 
-
     # print the model summary
     model = Model(inputs=input_points, outputs=prediction)
     print(model.summary())
-
 
     # compile classification model
     model.compile(optimizer='adam',
@@ -214,7 +179,6 @@ def pointnet_full(y, my_tags, test_ids, num_classes=18):
     # ------------------------------------------------------------------------------
     # Fit model on training data
     for i in range(1,max_epochs+1):
-        # model.fit(train_points_r, Y_train, batch_size=32, epochs=1, shuffle=True, verbose=1)
         # rotate and jitter the points
         train_points_rotate = rotate_point_cloud(train_points_r)
         train_points_jitter = jitter_point_cloud(train_points_rotate)
@@ -227,9 +191,7 @@ def pointnet_full(y, my_tags, test_ids, num_classes=18):
             print('Test loss: ', score[0])
             print('Test accuracy: ', score[1])
 
-
-    # ## 10. Evaluate the Model
-    # score the model
+    # Evaluate the Model ------------------------------------------------------
     score = model.evaluate(test_points_r, y_test, verbose=1)
     print('Test loss: ', score[0])
     print('Test accuracy: ', score[1])
@@ -238,12 +200,10 @@ def pointnet_full(y, my_tags, test_ids, num_classes=18):
     print("\nResults:\n")
     # ------------------------------------------------------------------------------
     # Classification Report
-
     # make predictions on the test set
     y_pred = model.predict(X_test)
 
     ################################################################################
-    from sklearn.metrics import accuracy_score, confusion_matrix
     print("\n###################### Model Performance ############################")
     # evaluate the model
     _, train_acc = model.evaluate(X_train, y_train, verbose=0)
@@ -252,25 +212,30 @@ def pointnet_full(y, my_tags, test_ids, num_classes=18):
     ################################################################################
     print("\n#####################################################################")
 
-    #Classification report
+    # Classification report
     report = classification_report(y_test, y_pred.round(), target_names=my_tags)
     print("\nClassfication Report for test:\n", report)
     print("\n#####################################################################")
 
     return(model, report)
+
 # =============================================================================
 # 3D CNN
 # =============================================================================
+
+
 def CNN(X_train, X_test, y_train, y_test, k, my_tags):
-    
+
     # Hyper parameters ---------------------------------------------------------
     max_epochs = 250
     batch_size = 128
-    dropout_rate=0.5
+    dropout_rate = 0.5
     class_weight = {0:10, 1:90}
+    size = 16
+    h, w, d = size, size, size
+    c=1
 
     # Model Architecture -------------------------------------------------------
-    
     model = Sequential()
     # Convolution layers
     model.add(Conv3D(filters=8, kernel_size=(3, 3, 3), activation='relu',\
@@ -290,19 +255,16 @@ def CNN(X_train, X_test, y_train, y_test, k, my_tags):
     model.add(BatchNormalization())
     model.add(Flatten())
 
-    # create an MLP architecture with dense layers : 4096 -> 512 -> 10
+    # create an MLP architecture with dense layers : 4096 -> 512 -> 2
     # add dropouts to avoid over-fitting / perform regularization
     model.add(Dense(units=(h*w*d), activation='relu'))
-    #model.add(Dropout(dropout_rate))
     model.add(BatchNormalization())
     model.add(Dense(units=512, activation='relu'))
-    #model.add(Dropout(dropout_rate))
     model.add(BatchNormalization())
     model.add(Dense(units=k, activation='softmax'))
 
     # Compile
-    model.compile(loss='categorical_crossentropy', optimizer='adam', \
-                  metrics=['accuracy'])
+    model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
     model.summary()
 
     print("\n####################### Training Model #############################")
@@ -350,7 +312,6 @@ def CNN(X_train, X_test, y_train, y_test, k, my_tags):
 
     # Classification report
     report = classification_report(y_test, y_pred.round(), target_names=my_tags)
-    #report = classification_report(y_test, y_pred.round())
     print("\nClassfication Report for test:\n", report)
     print("\n####################################################################")
     
