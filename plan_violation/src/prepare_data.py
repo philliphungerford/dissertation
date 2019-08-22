@@ -9,7 +9,7 @@ Purpose: Data preparation file for dissertation standardisation (aim 2)
 """
 
 # =============================================================================
-# Dependencies
+# 0. Dependencies
 # =============================================================================
 
 # Install dependencies
@@ -19,9 +19,13 @@ import pandas as pd
 import open3d
 from matplotlib import pyplot as plt
 
-# =============================================================================
-# Voxeliser function
-# =============================================================================
+"""
+VoxelGrid Class
+"""
+from matplotlib import pyplot as plt
+import numpy as np
+#from ..plot import plot_voxelgrid
+
 class VoxelGrid(object):
     def __init__(self, points, x_y_z=[1, 1, 1], bb_cuboid=False, build=True):
         """
@@ -112,10 +116,9 @@ class VoxelGrid(object):
             cbar_ax = fig.add_axes([0.85, 0.15, 0.05, 0.7])
             cbar = fig.colorbar(im, cax=cbar_ax)
             cbar.set_label('NUMBER OF POINTS IN VOXEL')
+        elif d == 3:
+            return plot_voxelgrid(self, cmap=cmap, axis=axis)
 			
-# =============================================================================
-# Point cloud importer
-# =============================================================================
 def import_data(folder, name):
     """
     This will read the file directory, list all files, find the patient numbers
@@ -123,6 +126,7 @@ def import_data(folder, name):
     """
     # dependencies
     import glob
+    import os
     from open3d import read_point_cloud
     import numpy as np
     import re
@@ -168,10 +172,7 @@ def import_data(folder, name):
     
     return all_patients, pt_nums
 	
-# =============================================================================
-# Label creation
-# =============================================================================
-def prepare_labels(patient_order):
+def prepare_labels():
 	'''
 	This function reads the csv data, extracts the patients who have a plan violation saves the labels returning the clean numpy array for labels
 	'''
@@ -200,9 +201,6 @@ def prepare_labels(patient_order):
 	
 	return(y)
 
-# =============================================================================
-# PointNet data functions
-# =============================================================================
 # farthest point calculation
 def calc_distances(p0, points):
     return ((p0 - points)**2).sum(axis=1)
@@ -217,20 +215,15 @@ def downsample(pts, K):
     return farthest_pts
 
 
-# =============================================================================
-# Create data
-# =============================================================================
 if __name__ == "__main__":
-    
 	# Gather point clouds
 	pointclouds, patient_order = import_data(name='patientpointclouds', folder='raw/')
 	voxel_data = np.ndarray(shape = (len(pointclouds), 16,16,16))
-	y = prepare_labels(patient_order)
 	
-    # Voxelise the data
+	# Voxelise the data
 	for i in range(len(pointclouds)):
 		plan = pointclouds[i]
-		tmp = VoxelGrid(plan, x_y_z=[16,16,16], bb_cuboid=False, build=True)
+		tmp = VoxelGrid(plan, x_y_z=[h,w,d], bb_cuboid=False, build=True)
 		tmp = tmp.vector
 		voxel_data[i] = tmp
 	

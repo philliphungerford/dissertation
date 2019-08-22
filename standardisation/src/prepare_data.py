@@ -118,60 +118,89 @@ class VoxelGrid(object):
 			return plot_voxelgrid(self, cmap=cmap, axis=axis)
 	
 
-# Create function for CNN features --------------------------------------------
 
-def get_features(voxel_size, save, binary=False):
 
-    # 1. Get point data from structures ---------------------------------------
-    # 1.1. Get a list of the structure files in raw directory
-    files = os.listdir('../data/raw/')
-    # 1.2. Create placeholder for cartesian coordinates
-    data_points = []
-    # 1.3. Iteratively scan each organ and at it to the placeholder
-    for count, file in enumerate(files):
-        print(count, ": Reading ->  ", file)
-        organ = open3d.read_point_cloud(file)
-        organ = np.asarray(organ.points)
-        data_points.append(organ)
-        print("Remaining: ", len(files) - count)
-    # 1.4. Save the order of our files for later
-    idx = [i for i in range(len(files))]
+def import_data(h,w,d):
+	import os
+	from open3d import *
 
-    # 2. CNN Features --------------------------------------------------------
-    # 2.1. Create empty array with dimensions n * (16*16*16)
-    h, w, d = voxel_size, voxel_size, voxel_size
-    X_cnn = np.zeros((data_points.shape[0], (h * w * d)), dtype=float)
-    # 2.2. Iteratively voxelize each structure
-    for num in range(0, data_points.shape[0]):
+	files = os.listdir('../data/raw/') # list of organs
+
+	datapoints = [] # where the xyz points will be stored
+
+	for count, file in enumerate(files):
+		print(count, ": Reading ->  ", file)
+		organ = read_point_cloud('../data/raw/' + file)
+		organ = np.asarray(organ.points)
+		datapoints.append(organ)
+
+	# To save the order of our files
+	idx = [i for i in range(len(files))]
+
+	# create empty array with dimensions n * (16*16*16)
+    points = np.zeros((datapoints.shape[0],(h*w*d)), dtype=float)
+    #import all files
+    for num in range(0,datapoints.shape[0]): 
         # get xyz points from file
         tmp = data_points[num]
-        # tmp = scale(tmp, -1, 1)
+        #tmp = scale(tmp, -1, 1)
         if tmp.shape[0] != 0:
-            tmp = VoxelGrid(tmp, x_y_z=[h, w, d])
+            tmp = VoxelGrid(tmp, x_y_z=[h,w,d])
             # get vector array of voxel
             tmp = tmp.vector
-            if binary == True:
-                tmp = tmp > 0
+            if binary==True:
+                tmp = tmp>0
                 tmp = tmp.astype(int)
-            # flatten vector
+            #flatten vector
             tmp = np.concatenate(tmp).ravel()
             # add to our list
-            X_cnn[num] = tmp
+            points[num] = tmp
+	np.save('../data/processed/pointclouds.npy', datapoints)
+    return datapoints, idx, X_cnn
 
-    # 2. RNN Features --------------------------------------------------------
-    # Create a pandas dataframe to examine and store the datafiles
-    dataset_2_info = pd.DataFrame({'index': idx, 'name': files})
+def prepare_labels(datapoints):
+	rnn_X = np.asarray(datapoints)
 
-    if save == 'yes':
-        np.save('../processed/dataset2voxels16.npy', X_cnn)
-        dataset_2_info.to_csv('../../interim/dataset2labels.csv', index=True)
+	# Create a pandas dataframe to examine and store the datafiles
+	rnn_X_info = pd.DataFrame({'index':idx, 'name':files})
+	rnn_X_info.to_csv('../../interim/X_rnn_y.csv',index=True)
+
+	return(rnn_X_info)
+	
+	# farthest point calculation
+def calc_distances(p0, points):
+    return ((p0 - points)**2).sum(axis=1)
+
+def downsample(pts, K):
+    farthest_pts = np.zeros((K, 3))
+    farthest_pts[0] = pts[np.random.randint(len(pts))]
+    distances = calc_distances(farthest_pts[0], pts)
+    for i in range(1, K):
+        farthest_pts[i] = pts[np.argmax(distances)]
+        distances = np.minimum(distances, calc_distances(farthest_pts[i], pts))
+    return farthest_pts
 
 
-    return data_points, idx, X_cnn
 
 # =============================================================================
 # 2. Prepare data
 # =============================================================================
 
 if __name__ == '__main__':
-    get_features(16, save="No")
+	datapoints, idx, X_cnn = import_data(16,16,16)
+	rnn_X_info = prepare_labels(datapoints)
+	
+	# Downsample the structures for PointNet Model ---------------------------------
+	pointnetdata = np.ndarray(shape=(7698, 1024, 3))
+	zeros = 0
+	for i in range(datapoints.shape[0]):
+		#check length of structure
+		if datapoints[i].shape[0] == 0:
+			zeros += 1
+			continue
+		pointnetdata[i] = downsample(datapoints[i], 1024)
+	
+	np.save('../processed/X_cnn.npy', X_cnn)
+	rnn_X_info.to_csv('../../interim/X_rnn_y.csv',index=True)
+	np.save("../data/processed/pointnetdata.npy", pointnetdata)
+	
