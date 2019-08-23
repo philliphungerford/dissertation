@@ -5,7 +5,7 @@ A repository for my dissertation code, that examines:
 
 Both projects have the following layout:
 
-project:
+- project
   - data: 
     - raw: raw 3D data files
     - interim: intermediate data such as point clouds
