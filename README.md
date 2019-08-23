@@ -19,4 +19,4 @@ Both projects have the following layout:
  
 Both projects use non-Euclidean (PointNet) and Euclidean (3D CNN) based neural networks to learn spatial information from 3D ploygon files (.ply) of radiation therapy plan structures. 
 
-*Data is not included due to ethics.*
+*Data is not included due to ethics and was included in the gitignore file.*
