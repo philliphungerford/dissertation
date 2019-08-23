@@ -19,12 +19,12 @@ np.random.seed(seeds)
 # =============================================================================
 def main():
     
-    # 2.1. load data -------------------------------------------------------------------
+    # 1. load data -------------------------------------------------------------------
     X_cnn = np.load('../data/processed/X_cnn.npy')
     y =  np.load('../data/processed/y.npy')
     k=2
 
-    # 2.1.2. prepare cnn data ------------------------------------------------------------
+    # 2. prepare cnn data ------------------------------------------------------------
     size = 16
     h, w, d = size, size, size
     c = 1  # Channels 1 = grey scale, 3 = colour
@@ -41,7 +41,7 @@ def main():
     X_train_cnn = X_train_cnn.reshape(X_train_cnn.shape[0], h, w, d, c)
     X_test_cnn = X_test_cnn.reshape(X_test_cnn.shape[0], h, w, d, c)
 
-    # 2.1.4. prepare the labels ------------------------------------------------------
+    # 3. prepare the labels ------------------------------------------------------
     y = pd.get_dummies(y).values
     # last 75/25 split
     y_train = y[test_ids[:-int(np.ceil(X_cnn.shape[0]*0.25))]]
@@ -50,7 +50,7 @@ def main():
     # tags
     my_tags = sorted(["No violation", "Violation"])
 
-    # 2.1.5. checks -----------------------------------------------------------------
+    # 4. checks -----------------------------------------------------------------
     print("CNN train shape: \t", X_train_cnn.shape)
     print("Label train shape: \t", y_train.shape)
     print("\n")
