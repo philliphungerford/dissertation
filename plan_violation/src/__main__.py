@@ -57,7 +57,7 @@ def main():
     print("CNN test shape: \t", X_test_cnn.shape)
     print("Label test shape: \t", y_test.shape)
     
-    # Run models --------------------------------------------------------------------
+    # 5. Run models --------------------------------------------------------------------
     CNN(X_train_cnn, X_test_cnn, y_train, y_test, k, my_tags)
     pointnet_full(y, my_tags, test_ids, num_classes=2)
 
