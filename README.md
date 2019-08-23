@@ -11,9 +11,9 @@ Both projects have the following layout:
     - interim: intermediate data such as point clouds
     - processed: features and labels in '.npy' format for the models.
   - notebooks: notebooks explaining the process of the project
+    - project notebook: 
   - output: output for scripts to save to includes model outcomes
   - src: location of python scripts
     - prepare_data: prepares the data for model deployment
     - models: contains machine learning models
  
- The 'data' folder should be placed in the project/data/raw directory.
