@@ -19,8 +19,6 @@ Both projects have the following layout:
  
 Both projects use non-Euclidean (PointNet) and Euclidean (3D CNN) based neural networks to learn spatial information from 3D ploygon files (.ply) of radiation therapy plan structures. 
 
-The projects were built using Python 3.7, when using a virtual environment use: ' pip3 install -r requirements.txt ' to download the appropriate python packages for model deployment.
-
-Open3d may also be downloaded for preprocessing the data using: 'pip3 install open3d-python' 
+The projects were built using Python 3.7, when using a virtual environment use: ' pip3 install -r requirements.txt ' to download the appropriate python packages for model deployment. 
 
 *Data is not included due to ethics and was included in the gitignore file.*
