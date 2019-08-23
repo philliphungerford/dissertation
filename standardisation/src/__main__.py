@@ -19,14 +19,14 @@ np.random.seed(seeds)
 # =============================================================================
 def main():
     
-    # 2.1. load data -------------------------------------------------------------------
+    # 1. load data -------------------------------------------------------------------
     filenames_y = pd.read_csv('../data/processed/X_rnn_y.csv')
     X_cnn = np.load('../data/processed/X_cnn.npy')
     X_rnn = filenames_y['organs']
     y_orig = filenames_y['class18']
     k=18
 
-    # 2.1.2. prepare cnn data ------------------------------------------------------------
+    # 2. prepare cnn data ------------------------------------------------------------
     size = 16
     h, w, d = size, size, size
     c = 1  # Channels 1 = grey scale, 3 = colour
@@ -43,13 +43,13 @@ def main():
     X_train_cnn = X_train_cnn.reshape(X_train_cnn.shape[0], h, w, d, c)
     X_test_cnn = X_test_cnn.reshape(X_test_cnn.shape[0], h, w, d, c)
 
-    # 2.1.3. prepare rnn data ---------------------------------------------------------
+    # 3. prepare rnn data ---------------------------------------------------------
 
     MAX_NB_CHARS = 26
     MAX_SEQUENCE_LENGTH = 5
     EMBEDDING_DIM = 20
 
-    # 2.1.3.1 Tokenize the data
+    # 3.2. Tokenize the data
     tokenizer = Tokenizer(num_words=MAX_NB_CHARS,
                           filters='!"#$%&()*+,-./:;<=>?@[\]^_`{|}~', lower=True,
                           char_level=True)
@@ -62,7 +62,7 @@ def main():
     X_train_rnn = X_rnn[test_ids[:-int(np.ceil(X_cnn.shape[0]*0.25))]]
     X_test_rnn = X_rnn[test_ids[-int(np.ceil(X_cnn.shape[0]*0.25)):]]
 
-    # 2.1.4. prepare the labels ------------------------------------------------------
+    # 4. prepare the labels ------------------------------------------------------
     y = pd.get_dummies(y_orig).values
     # last 75/25 split
     y_train = y[test_ids[:-int(np.ceil(X_cnn.shape[0]*0.25))]]
@@ -80,7 +80,7 @@ def main():
     print("RNN test shape: \t", X_test_rnn.shape)
     print("Label test shape: \t", y_test.shape)
 
-    # Deploy models
+    # 5. Deploy models
     pointnet, pointnet_report = pointnet_full(y, my_tags, test_ids)
     cnn, cnn_report = CNN(X_train_cnn, X_test_cnn, y_train, y_test, k, my_tags = my_tags)
     rnn_model = rnn(X_train_rnn, X_test_rnn, y_train, y_test, k, my_tags=my_tags)
