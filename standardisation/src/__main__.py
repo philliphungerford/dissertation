@@ -71,7 +71,7 @@ def main():
     # tags
     my_tags = sorted([i for i in set(y_orig)])
 
-    # 2.1.5. checks -----------------------------------------------------------------
+    # 5. checks -----------------------------------------------------------------
     print("CNN train shape: \t", X_train_cnn.shape)
     print("RNN train shape: \t", X_train_rnn.shape)
     print("Label train shape: \t", y_train.shape)
@@ -80,7 +80,7 @@ def main():
     print("RNN test shape: \t", X_test_rnn.shape)
     print("Label test shape: \t", y_test.shape)
 
-    # 5. Deploy models
+    # 6. Deploy models
     pointnet, pointnet_report = pointnet_full(y, my_tags, test_ids)
     cnn, cnn_report = CNN(X_train_cnn, X_test_cnn, y_train, y_test, k, my_tags = my_tags)
     rnn_model = rnn(X_train_rnn, X_test_rnn, y_train, y_test, k, my_tags=my_tags)
